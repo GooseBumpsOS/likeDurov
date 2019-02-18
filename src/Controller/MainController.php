@@ -19,17 +19,36 @@ class MainController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
+        if($request->isMethod('post')){
+
+            $msg = new ChatData();
+
+            $UserMsg = $request->request->get('msg');
+
+            $request->request->remove('msg');
+
+            $msg->setLogin('goose');
+
+            $msg->setChat($UserMsg);
+
+            $em->persist($msg);
+            $em->flush();
+
+
+        }
+
         $userDataFromDB = $em->getRepository(UserData::class)->findAll();
 
         $chatDataFromDB = $em->getRepository(ChatData::class)->findAll();
 
         for($i=0; $i<count($chatDataFromDB); $i++)
 
-        $chatPhoto[] = $em->getRepository(UserData::class)->findOneBy([
+            $chatPhoto[] = $em->getRepository(UserData::class)->findOneBy([
 
-           'login' => $chatDataFromDB[$i]->getLogin(),
+                'login' => $chatDataFromDB[$i]->getLogin(),
 
-        ]);
+            ]);
+
 
         // return $this->render('dump.html.twig', ['var' => $chatPhoto]);
 
@@ -50,9 +69,9 @@ class MainController extends AbstractController
      */
     public function ajaxCall(Request $request){
 
-        if($request->request->get('some_var_name')){
+        if($request->request->get('msg')){
             //make something curious, get some unbelieveable data
-            $arrData = ['output' => 'here the result which will appear in div', 'second' => 'seconddate'];
+            $arrData = ['output' => $request->request->get('msg')];
             return new JsonResponse($arrData);
         }
 

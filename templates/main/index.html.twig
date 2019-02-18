@@ -64,7 +64,7 @@
                         </div>
                         <div class="user_info">
                             <span>Общий чат</span>
-                            <p>Сообщений: 100</p>
+                            <p>Сообщений: {{ chat|length }}</p>
                         </div>
 
                     </div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="msg_cotainer">
                             {{ chat[i].chat }}
-                            <span class="msg_time">9:00 AM, Today</span>
+                            <span class="msg_time">9:00</span>
                         </div>
                     </div>
 
@@ -100,19 +100,27 @@
 
                 </div>
                 <div class="card-footer">
+                    {#<form method="POST">#}
                     <div class="input-group">
                         <div class="input-group-append">
                             <!-- <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span> -->
                         </div>
-                        <textarea name="" class="form-control type_msg" placeholder="Напишите сообщение..."></textarea>
+                        <textarea name="msg" id="textAreaClear" class="form-control type_msg" placeholder="Напишите сообщение..."></textarea>
+
                         <div class="input-group-append">
-                            <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+
+
+                                <button id="sendMsg" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+
                         </div>
+
                     </div>
+                    {#</form>#}
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
