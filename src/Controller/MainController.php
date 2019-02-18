@@ -47,6 +47,8 @@ class MainController extends AbstractController
 
     /**
      * @Route("/ajax", name="ajax")
+     * @param Request $request
+     * @return JsonResponse
      */
     public function ajaxCall(Request $request){
 
@@ -73,6 +75,8 @@ class MainController extends AbstractController
 
     /**
      * @Route("/", name="login")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function login(Request $request){
 
