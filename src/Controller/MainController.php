@@ -7,7 +7,6 @@ use App\Entity\UserData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
@@ -77,6 +76,23 @@ class MainController extends AbstractController
      */
     public function login(Request $request){
 
+        if(!empty($request->cookies->get('p')))
+        {
+            $em = $this->getDoctrine()->getManager()->getRepository(UserData::class);
+
+           $check = $em->findOneBy([
+
+               "login" =>  $request->cookies->get('l'),
+
+                "password" => $request->cookies->get('p'),
+
+            ]);
+
+            if(isset($check)){
+                return $this->redirectToRoute('main', [], 302);
+            }
+        }
+
         if($request->isMethod('post'))
         {
 
@@ -85,23 +101,24 @@ class MainController extends AbstractController
             $userLog = $request->request->get('login');
             $userPas = $request->request->get('password');
 
-            $userPas = 1;//hash('sha256', $userPas, true);
+            $userPasHash = hash('sha256', $userPas, false);
+
 
             $em = $this->getDoctrine()->getManager()->getRepository(UserData::class);
 
             $userDataFromDB = $em->findOneBy([
 
                 'login' => $userLog,
-                'password' => $userPas,
+                'password' => $userPasHash,
 
             ]);
 
-            //return $this->render('dump.html.twig', ['var' => $userDataFromDB]);
+            //return $this->render('dump.html.twig', ['var' => $userPasHash]);
 
             if(isset($userDataFromDB))
             {
-
-                $request->cookies->set('p', $userDataFromDB->getPassword());
+               setcookie('l', $userLog);
+               setcookie('p', $userPasHash);
             }
 
         }
