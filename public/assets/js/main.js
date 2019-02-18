@@ -3,7 +3,7 @@
 $('#sendMsg').click(function () {
         that = $(this);
         $.ajax({
-            url:'ajax',
+            url:'aj1ax',
             type: "POST",
             dataType: "json",
             data: {
@@ -16,7 +16,7 @@ $('#sendMsg').click(function () {
                 console.log(data);
                 var html ='<div class="d-flex justify-content-start mb-4">\n' +
                     '    <div class="img_cont_msg">\n' +
-                    '    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/ec/5b/b5/ec5bb5dd-b4c7-ca71-37e2-b8b407144b55/AppIcon-2-0-1x_U007emarketing-0-85-220-9.png/246x0w.jpg" class="rounded-circle user_img_msg">\n' +
+                    '    <img src="' + data.usrData + '" class="rounded-circle user_img_msg">\n' +
                     '    </div>\n' +
                     '    <div class="msg_cotainer">\n' +
                     data.msg +
@@ -35,6 +35,35 @@ $('#sendMsg').click(function () {
 
     }
     );
+
+
+setInterval(function () {
+    $.ajax({
+        url: 'ajax_toDB',
+        type: "POST",
+        dataType: "json",
+        data: {
+            "LastMsg":  'sdfgh'
+        },
+        async: true,
+        success: function(data) {
+            // do something with "data"
+            if (data.length > 0) {
+                //alert(data);
+            }
+         // InfiniteAjaxRequest(uri);
+                console.log(data[0].id);
+
+        },
+        // error: function(xhr, ajaxOptions, thrownError) {
+        //     alert(thrownError);
+        // }
+    });
+}, 3000);
+
+
+
+
 
 
 

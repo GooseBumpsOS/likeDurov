@@ -19,6 +19,21 @@ class ChatDataRepository extends ServiceEntityRepository
         parent::__construct($registry, ChatData::class);
     }
 
+    public function getLastMsg($amount){
+
+        $qd = $this
+                ->createQueryBuilder('p')
+                ->orderBy('p.id', 'DESC')
+                ->setMaxResults($amount)
+                ->getQuery()
+        ;
+
+
+        return $qd->getArrayResult();
+
+
+    }
+
     // /**
     //  * @return ChatData[] Returns an array of ChatData objects
     //  */
