@@ -14,7 +14,7 @@ class MainController extends AbstractController
     /**
      * @Route("/main", name="main")
      */
-    public function index(Request $request)
+    public function index()
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -75,7 +75,36 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="login")
      */
-    public function login(){
+    public function login(Request $request){
+
+        if($request->isMethod('post'))
+        {
+
+            $request->cookies->set('p','1');
+
+            $userLog = $request->request->get('login');
+            $userPas = $request->request->get('password');
+
+            $userPas = 1;//hash('sha256', $userPas, true);
+
+            $em = $this->getDoctrine()->getManager()->getRepository(UserData::class);
+
+            $userDataFromDB = $em->findOneBy([
+
+                'login' => $userLog,
+                'password' => $userPas,
+
+            ]);
+
+            //return $this->render('dump.html.twig', ['var' => $userDataFromDB]);
+
+            if(isset($userDataFromDB))
+            {
+
+                $request->cookies->set('p', $userDataFromDB->getPassword());
+            }
+
+        }
 
 
         return $this->render('main/login.html.twig');
