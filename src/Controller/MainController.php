@@ -19,24 +19,6 @@ class MainController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        if($request->isMethod('post')){
-
-            $msg = new ChatData();
-
-            $UserMsg = $request->request->get('msg');
-
-            $request->request->remove('msg');
-
-            $msg->setLogin('goose');
-
-            $msg->setChat($UserMsg);
-
-            $em->persist($msg);
-            $em->flush();
-
-
-        }
-
         $userDataFromDB = $em->getRepository(UserData::class)->findAll();
 
         $chatDataFromDB = $em->getRepository(ChatData::class)->findAll();
@@ -70,8 +52,19 @@ class MainController extends AbstractController
     public function ajaxCall(Request $request){
 
         if($request->request->get('msg')){
+            $UserMsg = $request->request->get('msg');
             //make something curious, get some unbelieveable data
-            $arrData = ['output' => $request->request->get('msg')];
+            $arrData = ['msg' => $UserMsg];
+
+            $msg = new ChatData();
+
+            $msg->setLogin('goose');
+
+            $msg->setChat($UserMsg);
+
+            $this->getDoctrine()->getManager()->persist($msg);
+            $this->getDoctrine()->getManager()->flush();
+
             return new JsonResponse($arrData);
         }
 
