@@ -3,7 +3,7 @@
 $('#sendMsg').click(function () {
         that = $(this);
         $.ajax({
-            url:'aj1ax',
+            url:'ajax',
             type: "POST",
             dataType: "json",
             data: {
@@ -16,11 +16,9 @@ $('#sendMsg').click(function () {
                 console.log(data);
                 var html ='<div class="d-flex justify-content-start mb-4">\n' +
                     '    <div class="img_cont_msg">\n' +
-                    '    <img src="' + data.usrData + '" class="rounded-circle user_img_msg">\n' +
+                    '    <img src="' + 'https://thishosting.rocks/wp-content/uploads/2018/01/install-php-7-2-ubuntu-1024x438.jpg.webp' + '" class="rounded-circle user_img_msg">\n' +
                     '    </div>\n' +
-                    '    <div class="msg_cotainer">\n' +
-                    data.msg +
-                    '<span class="msg_time">9:00</span>\n' +
+                    '    <div class="msg_cotainer">\n' +data.msg+
                     '</div>\n' +
                     '</div>';
 
@@ -43,21 +41,39 @@ setInterval(function () {
         type: "POST",
         dataType: "json",
         data: {
-            "LastMsg":  'sdfgh'
+            "LastMsg":  $(".msg_cotainer:last").text()
         },
         async: true,
         success: function(data) {
             // do something with "data"
-            if (data.length > 0) {
-                //alert(data);
-            }
-         // InfiniteAjaxRequest(uri);
-                console.log(data[0].id);
+            if (data != "FirstError") {
+                for(var i=0;i<1;i++)
+                {
+                    var html ='<div class="d-flex justify-content-start mb-4">\n' +
+                        '    <div class="img_cont_msg">' +
+                        '    <img src="' + data.id + '" class="rounded-circle user_img_msg">\n' +
+                        '    </div>\n' +
+                        '    <div class="msg_cotainer">' +data[i].chat+
+                        '</div>' +
+                        '</div>';
 
-        },
-        // error: function(xhr, ajaxOptions, thrownError) {
-        //     alert(thrownError);
-        // }
+
+
+                    $(".msg_card_body").append(html);
+
+                                    $('.card-body').animate({ scrollTop: 10000000000}, "slow" );
+
+                                    console.log('1');
+
+                                    data = null;
+                                    //console.log(data.keys(data).length);
+                }
+
+
+            }
+         // InfiniteAjaxRequest(uri)
+
+        }
     });
 }, 3000);
 

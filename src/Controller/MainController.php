@@ -112,11 +112,11 @@ class MainController extends AbstractController
      */
     public function update(Request $request){
 
-//        if(empty($request->request->get('LastMsg')))
-//            return $this->render('dump.html.twig', ['var' =>'StartError']);
+        if(empty($request->request->get('LastMsg')))
+            return new JsonResponse('FirstError');
 
 
-        $lastMsgChat = 'sdfgh';//$request->request->get('LastMsg');
+        $lastMsgChat = $request->request->get('LastMsg');
 
         $data = $this->getDoctrine()->getRepository(ChatData::class);
 
@@ -130,10 +130,14 @@ class MainController extends AbstractController
 
        ]);
 
+        //return $this->render('dump.html.twig', ['var' =>  $msgFromChatInDB]);
+
        if($lastMsgChat != $lstMsgDB)
        {
 
             $dif =  count($dataFindAll) - $msgFromChatInDB->getId();
+
+           //$_POST = array();
 
            return new JsonResponse($data->getLastMsg($dif));
        }
