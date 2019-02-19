@@ -43,15 +43,15 @@ setInterval(function () {
         data: {
             "LastMsg":  $(".msg_cotainer:last").text()
         },
-        async: true,
+        async: false,
         success: function(data) {
             // do something with "data"
             if (data != "FirstError") {
-                for(var i=0;i<1;i++)
+                for(var i=0;i<data.length;i++)
                 {
                     var html ='<div class="d-flex justify-content-start mb-4">\n' +
                         '    <div class="img_cont_msg">' +
-                        '    <img src="' + data.id + '" class="rounded-circle user_img_msg">\n' +
+                        '    <img src="' + ' ' + '" class="rounded-circle user_img_msg">\n' +
                         '    </div>\n' +
                         '    <div class="msg_cotainer">' +data[i].chat+
                         '</div>' +
@@ -63,11 +63,13 @@ setInterval(function () {
 
                                     $('.card-body').animate({ scrollTop: 10000000000}, "slow" );
 
-                                    console.log('1');
+                                    console.log(data.length);
 
-                                    data = null;
+                                   // data = null;
                                     //console.log(data.keys(data).length);
                 }
+
+
 
 
             }
@@ -75,7 +77,7 @@ setInterval(function () {
 
         }
     });
-}, 3000);
+}, 10000);
 
 
 

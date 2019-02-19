@@ -128,18 +128,18 @@ class MainController extends AbstractController
 
            'chat' => $lastMsgChat
 
-       ]);
+       ], ['id' => 'DESC']);
 
-        //return $this->render('dump.html.twig', ['var' =>  $msgFromChatInDB]);
+
+       // return $this->render('dump.html.twig', ['var' =>  $msgFromChatInDB]);
+
 
        if($lastMsgChat != $lstMsgDB)
        {
 
             $dif =  count($dataFindAll) - $msgFromChatInDB->getId();
 
-           //$_POST = array();
-
-           return new JsonResponse($data->getLastMsg($dif));
+           return new JsonResponse(  array_reverse($data->getLastMsg($dif))); //массив приходит в обратном порядке
        }
 
         return $this->render('dump.html.twig', ['var' =>  '1']);
