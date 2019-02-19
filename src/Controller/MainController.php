@@ -14,21 +14,24 @@ class MainController extends AbstractController
     /**
      * @Route("/main", name="main")
      */
-    public function index()
+    public function index(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $userDataFromDB = $em->getRepository(UserData::class)->findAll();
-        $chatDataFromDB = $em->getRepository(ChatData::class)->findAll();
-        for($i=0; $i<count($chatDataFromDB); $i++)
-            $chatPhoto[] = $em->getRepository(UserData::class)->findOneBy([
-                'login' => $chatDataFromDB[$i]->getLogin(),
+        if($request->cookies->get('p') && $request->cookies->get('l')) //безопасности не добавило, но приятно
+        {
+            $em = $this->getDoctrine()->getManager();
+            $userDataFromDB = $em->getRepository(UserData::class)->findAll();
+            $chatDataFromDB = $em->getRepository(ChatData::class)->findAll();
+            for ($i = 0; $i < count($chatDataFromDB); $i++)
+                $chatPhoto[] = $em->getRepository(UserData::class)->findOneBy([
+                    'login' => $chatDataFromDB[$i]->getLogin(),
+                ]);
+            // return $this->render('dump.html.twig', ['var' => $chatPhoto]);
+            return $this->render('main/index.html.twig', [
+                'chat' => $chatDataFromDB,
+                'user' => $userDataFromDB,
+                'chatPhoto' => $chatPhoto,
             ]);
-        // return $this->render('dump.html.twig', ['var' => $chatPhoto]);
-        return $this->render('main/index.html.twig',[
-            'chat' => $chatDataFromDB,
-            'user' => $userDataFromDB,
-            'chatPhoto' => $chatPhoto,
-        ]);
+        } else return $this->redirectToRoute('login');
     }
 
     /**
@@ -77,20 +80,24 @@ class MainController extends AbstractController
         }
         if($request->isMethod('post'))
         {
-            $request->cookies->set('p','1');
             $userLog = $request->request->get('login');
             $userPas = $request->request->get('password');
+
             $userPasHash = hash('sha256', $userPas, false);
             $em = $this->getDoctrine()->getManager()->getRepository(UserData::class);
+
             $userDataFromDB = $em->findOneBy([
                 'login' => $userLog,
                 'password' => $userPasHash,
             ]);
+
+           $userPhoto = $userDataFromDB->getPhoto();
             //return $this->render('dump.html.twig', ['var' => $userPasHash]);
             if(isset($userDataFromDB))
             {
                setcookie('l', $userLog);
                setcookie('p', $userPasHash);
+               setcookie('i', );
             }
 
             $em = $this->getDoctrine()->getManager()->getRepository(UserData::class);

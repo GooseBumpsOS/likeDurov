@@ -1,4 +1,10 @@
-
+// возвращает cookie с именем name, если есть, если нет, то undefined
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
 $('#sendMsg').click(function () {
         that = $(this);
@@ -14,12 +20,12 @@ $('#sendMsg').click(function () {
             {
                 $("#textAreaClear").val('');
                 console.log(data);
-                var html ='<div class="d-flex justify-content-start mb-4">\n' +
-                    '    <div class="img_cont_msg">\n' +
-                    '    <img src="' + 'https://thishosting.rocks/wp-content/uploads/2018/01/install-php-7-2-ubuntu-1024x438.jpg.webp' + '" class="rounded-circle user_img_msg">\n' +
-                    '    </div>\n' +
-                    '    <div class="msg_cotainer">\n' +data.msg+
-                    '</div>\n' +
+                var html ='<div class="d-flex justify-content-start mb-4">' +
+                    '    <div class="img_cont_msg">' +
+                    '    <img src="' + 'https://thishosting.rocks/wp-content/uploads/2018/01/install-php-7-2-ubuntu-1024x438.jpg.webp' + '" class="rounded-circle user_img_msg">' +
+                    '    </div>' +
+                    '    <div class="msg_cotainer">' +data.msg+
+                    '</div>' +
                     '</div>';
 
                 $(".msg_card_body").append(html);
@@ -49,12 +55,11 @@ setInterval(function () {
             if (data != "FirstError") {
                 for(var i=0;i<data.length;i++)
                 {
-                    var html ='<div class="d-flex justify-content-start mb-4">\n' +
+                    var html ='<div class="d-flex justify-content-start mb-4">' +
                         '    <div class="img_cont_msg">' +
-                        '    <img src="' + ' ' + '" class="rounded-circle user_img_msg">\n' +
-                        '    </div>\n' +
-                        '    <div class="msg_cotainer">' +data[i].chat+
+                        '<img src="' +getCookie('i')+ '" class="rounded-circle user_img_msg">'+
                         '</div>' +
+                        '<div class="msg_cotainer">'+data[i].chat+'</div>'+
                         '</div>';
 
 
@@ -77,7 +82,7 @@ setInterval(function () {
 
         }
     });
-}, 10000);
+}, 2000);
 
 
 
